@@ -1,0 +1,37 @@
+Basic Concept
+    Claims and Statements
+    Premises and Conclusion
+    Conditionals
+    Arguments and Extended Arguments
+    Argument Reconstruction
+    Difference between Logic and Rhetoric
+    Logical Validity
+    Soundness
+Fundamentals of Logic
+    Quantity and Quality
+    Distribution
+    Venn Diagrams
+    Spare of Opposition
+    Syntax
+    Semantics
+    Truth Tables for Propositions
+    Truth Tables for Arguments
+    Logical Operators
+    Quantifiers
+    Translation
+    Rules of Inferences
+Types of Inferences
+    Cogency
+    Inductive Reasoning vs Deductive Reasoning
+    Inductive Inferences
+    Causal Inferences and Predictions
+    The Problem of Induction
+    Abduction
+    The Epistemological Status of Deductive, Inductive, and Abductive Inferences
+Synthesis
+    Summary of the Topics covered in the course
+    Role of Logic in Argumentation
+    Role of Logic in Science
+    Role of Logic in Daily Life
+    Awareness of the logical structure of thinking
+    Knowledge of the formal mechanisms of Symbolic Logic

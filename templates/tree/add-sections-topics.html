@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action={% url "add_sections_topics"%} id="sections_topics" method="POST">
+{% csrf_token %}
+  <label for="courses">Choose a course:</label><br>
+  <select id="course" name="course">
+    {% for course in courses %}
+    <option value={{ course.id }}>{{ course.name }}</option>
+    {% endfor %}
+  </select><br><br>
+  <label for="data">Data:</label><br>
+  <textarea id="data" name="data" form="sections_topics" rows="30" cols="70"></textarea><br>
+  <input type="submit">
+</form>
+</body>
+</html>
