@@ -1,11 +1,7 @@
 from django.contrib import admin
 
-from tree.models import Course, CourseRelations, Section, Topic
+from tree.models import Course, CourseRelations
 
 admin.site.register(Course)
 
 admin.site.register(CourseRelations)
-
-admin.site.register(Section)
-
-admin.site.register(Topic)
