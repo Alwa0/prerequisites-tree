@@ -12,9 +12,12 @@ def find_courses():
     r = requests.get(url=url, params=params)
     data = r.json()
     data = json.dumps(data)
+    data = data.split("Unnumbered courses")[0]
+    data = ' '.join(data.split())
     data = data.split('\\n*')[1:]
+    data.pop(8)
     links = [c.split(' ')[1][1:] for c in data]
-    courses = [c.split(' ')[2:] for c in data]
+    courses = [c.split(' ')[4:] for c in data]
     courses = [" ".join(c) for c in courses]
     i = 0
     for c in courses:
@@ -22,6 +25,10 @@ def find_courses():
             if ']' in c:
                 name = c[:c.index(']')]
                 if not Course.objects.filter(name=name).first():
+                    if name[-1] == "I":
+                        name = name[:-1].title() + "I"
+                    else:
+                        name = name.title()
                     Course.objects.create(name=name, url=links[i])
         i += 1
 
@@ -53,10 +60,10 @@ def find_prerequisites(course):
                 edge = (p.title()[:-1]+"I", course)
             elif p == "Discrete Math/Logic" or p == "Discrete Math and Logic":
                 edge = ("Philosophy I", course)
-            elif p == "Data Structure and Algorithms I":
-                edge = ("Data Structures Algorithms I", course)
-            elif p == "Data Structure and Algorithms II":
-                edge = ("Data Structures Algorithms II", course)
+            # elif p == "Data Structure and Algorithms I":
+            #     edge = ("Data Structures Algorithms I", course)
+            # elif p == "Data Structure and Algorithms II":
+            #     edge = ("Data Structures Algorithms II", course)
             if edge:
                 pre = Course.objects.get(name=edge[0])
                 if not CourseRelations.objects.filter(prerequisite=pre, post_requisite=course).first():

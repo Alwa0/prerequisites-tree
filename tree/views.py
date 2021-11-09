@@ -7,7 +7,7 @@ from tree.models import CourseRelations, Course
 
 
 def tree(request):
-    if request.method == "POST":
+    if request.method == "POST" or not CourseRelations.objects.first():
         find_courses()
         for course in Course.objects.all():
             find_prerequisites(course)
