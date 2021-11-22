@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -74,5 +75,23 @@ def graph_for_course(request, course_name):
         graph.node(n, URL=post.post_requisite.url)
         graph.edge(cn, n)
     data = graph.pipe().decode('utf-8')
+    data = json.loads(data)
     return Response(data)
 
+
+@api_view(('GET',))
+def show_graph_for_course(request, course_name):
+    response = graph_for_course(request._request, course_name)
+    data = response.data
+    nodes = data['objects']
+    edges = data['edges']
+    graph = create_graph('svg')
+    for node in nodes:
+        graph.node(node["name"], URL=node['URL'])
+    for edge in edges:
+        graph.edge(nodes[edge["tail"]]['name'], nodes[edge["head"]]['name'])
+    data = graph.pipe().decode('utf-8')
+    f = open("templates/tree/tree.html", 'w+')
+    f.write(data)
+    f.close()
+    return render(request, 'tree/tree.html')
