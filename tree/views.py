@@ -1,5 +1,6 @@
 import json
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpRequest, Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -7,18 +8,18 @@ from tree.services import find_prerequisites, create_graph, find_courses
 from tree.models import CourseRelations, Course
 
 
-def tree(request):
-    if request.method == "POST" or not CourseRelations.objects.first():
-        find_courses()
-        for course in Course.objects.all():
+def tree(request, program):
+    if request.method == "POST" or not CourseRelations.objects.filter(prerequisite__program=program).first():
+        find_courses(program)
+        for course in Course.objects.filter(program=program):
             find_prerequisites(course)
     graph = create_graph('svg')
-    for course in Course.objects.all():
+    for course in Course.objects.filter(program=program):
         n = course.name
         if len(n) > 15:
             n = n.replace(' ', '\n')
         graph.node(n, URL=course.url)
-    edges = CourseRelations.objects.all()
+    edges = CourseRelations.objects.filter(prerequisite__program=program)
     for edge in edges:
         n1 = edge.prerequisite.name
         n2 = edge.post_requisite.name
@@ -30,7 +31,7 @@ def tree(request):
     data = graph.pipe().decode('utf-8')
 
     data += """\n
-    <form action="{% url 'tree' %}" method="post">
+    <form action="{% url 'tree' '""" + program + """' %}" method="post">
         {% csrf_token %}
         <button type="submit" style="
             background-color: rgb(255,114,86); 
@@ -79,12 +80,17 @@ def graph_for_course(request, course_name):
     return Response(data)
 
 
-@api_view(('GET',))
 def show_graph_for_course(request, course_name):
-    response = graph_for_course(request._request, course_name)
+    request = HttpRequest()
+    request.method = 'GET'
+    response = graph_for_course(request, course_name)
+    if response.status_code != 200:
+        raise Http404("No such course")
     data = response.data
     nodes = data['objects']
-    edges = data['edges']
+    edges = []
+    if 'edges' in data:
+        edges = data['edges']
     graph = create_graph('svg')
     for node in nodes:
         graph.node(node["name"], URL=node['URL'])

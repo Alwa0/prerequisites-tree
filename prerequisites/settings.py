@@ -41,7 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tree.apps.TreeConfig',
     'rest_framework',
+    'coreapi',  # Coreapi for coreapi documentation
+    'drf_yasg',  # drf_yasg fro Swagger documentation
 ]
+
+REST_FRAMEWORK = {'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -4,11 +4,15 @@ import graphviz
 from tree.models import Course, CourseRelations
 
 
-def find_courses():
-    Course.objects.all().delete()
-    CourseRelations.objects.all().delete()
+def find_courses(program):
+    Course.objects.filter(program=program).delete()
+    CourseRelations.objects.filter(prerequisite__program=program).delete()
     url = "https://eduwiki.innopolis.university/api.php"
-    params = {'pageid': '156', 'format': 'json', 'action': 'parse', 'prop': 'wikitext'}
+    params = {}
+    if program == "bach":
+        params = {'pageid': '156', 'format': 'json', 'action': 'parse', 'prop': 'wikitext'}
+    if program == "mast":
+        params = {'pageid': '157', 'format': 'json', 'action': 'parse', 'prop': 'wikitext'}
     r = requests.get(url=url, params=params)
     data = r.json()
     data = json.dumps(data)
@@ -24,12 +28,8 @@ def find_courses():
         if 'Elective' not in c:
             if ']' in c:
                 name = c[:c.index(']')]
-                if not Course.objects.filter(name=name).first():
-                    if name[-1] == "I":
-                        name = name[:-1].title() + "I"
-                    else:
-                        name = name.title()
-                    Course.objects.create(name=name, url=links[i])
+                if not Course.objects.filter(name=name, program=program).first():
+                    Course.objects.create(name=name, url=links[i], program=program)
         i += 1
 
 
@@ -58,8 +58,8 @@ def find_prerequisites(course):
                 edge = (p.title(), course)
             elif Course.objects.filter(name=p.title()[:-1]+"I").first():
                 edge = (p.title()[:-1]+"I", course)
-            elif p == "Discrete Math/Logic" or p == "Discrete Math and Logic":
-                edge = ("Philosophy I", course)
+            # elif p == "Discrete Math/Logic" or p == "Discrete Math and Logic":
+            #     edge = ("Philosophy 1: Logic And Discrete Mathematics", course)
             # elif p == "Data Structure and Algorithms I":
             #     edge = ("Data Structures Algorithms I", course)
             # elif p == "Data Structure and Algorithms II":
