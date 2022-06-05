@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form method='post'>
+    <label for="course">Choose a course:</label><br><br>
+    <select id="course" name="course">
+    {% for c in courses %}
+        <option value= "{{ c }}" readonly> {{ c }} </option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="next"/>
+</form>

@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-v_=lc*cez@#=g&@c&cx9ad@1dd^8bms^*@9h=ty=7x7rzo2kmc'
+SECRET_KEY = 'django-insecure-v_=lc2431312t623jnrtklwerm;lwngwebnglwfd*cez@#=g&@c&cx9ad@1dd^8bms^*@9h=ty=7x7rzo2kmc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -85,14 +85,15 @@ WSGI_APPLICATION = 'prerequisites.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tree',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME': "treedb",
+        'USER': "postgres",
+        'PASSWORD': "postgres",
+        'HOST': "127.0.0.1",
+        'PORT': "5432",
+        'CONN_MAX_AGE': 60,
+        'DISABLE_SERVER_SIDE_CURSORS': True,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -131,6 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR.parent / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

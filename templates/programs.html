@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form method='post' style="margin: 10px">
+    <label>Choose a program:</label><br><br>
+    {% for p in programs %}
+        <input type="submit" name={{ p }} value= {{ p }} />
+    {% endfor %}
+</form>

@@ -12,6 +12,13 @@
 6. Run `python3 manage.py migrate` to apply migrations and `python3 manage.py runserver` to run server locally.
 
 ### Example of "get graph for one course" method usage
+By course name:
+
 ![img.png](img.png)
+
+By course id:
+
+![img.png](img2.jpg)
+
 1. To get graph nodes use `response.data['objects']`
 2. To get graph edges use `response.data['edges']`
